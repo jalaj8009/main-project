@@ -1,3 +1,21 @@
+# Stage 1: Use Node.js as the base image for building the Angular app
+FROM node:16 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json into the container
+COPY package*.json ./
+
+# Install Angular CLI and dependencies
+RUN npm install -g @angular/cli@16.2.7 && npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the Angular application with a custom base href
+RUN ng build --base-href /my_project/
+
 # Use the official Nginx image as a base image
 FROM nginx:alpine
 
